@@ -116,6 +116,16 @@ div.doublebutton p {
   background-color: #eeba66;
 }
 
+.eq {
+  background-color: #f59700;
+  color: #f4f4f4;
+}
+
+.eq:active {
+  font-weight: bold;
+  background-color: #eeba66;
+}
+
 .digit {
   background-color: #343434;
   color: white;

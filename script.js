@@ -26,6 +26,19 @@ for (const digit of digits) {
   });
 }
 
+// Function buttons
+for (const fun of calfunc) {
+  fun.addEventListener("click", (e) => {
+    if (e.target.id == "clear") {
+      displayValue = 0;
+      lastOp = "";
+      value1 = 0;
+      value2 = 0;
+      result.innerText = displayValue;
+    }
+  });
+}
+
 // operator actions
 for (const op of operators) {
   op.addEventListener("click", (e) => {
@@ -61,6 +74,9 @@ function getResult(value1, operator, value2) {
     case "-":
       return value1 - value2;
     case "/":
+      if (value1 == 0 || value2 == 0) {
+        return "Zero Error";
+      }
       return value1 / value2;
     case "*":
       return value1 * value2;

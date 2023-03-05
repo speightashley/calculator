@@ -97,8 +97,8 @@ Trim the numbers down if they are too bit for display
 displayValue: Int which is converted to string and returned to 9 digits
 */
 
-  if (displayValue.length > 9) {
-    return displayValue.substring(0, 9);
+  if (displayValue.length > 8) {
+    return displayValue.substring(0, 8);
   }
   return displayValue;
 }

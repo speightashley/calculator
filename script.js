@@ -35,7 +35,7 @@ for (const digit of digits) {
       result.innerText = displayValue;
     } else {
       displayValue += e.target.id;
-      result.innerText = displayValue;
+      result.innerText = cleanDisplay(displayValue);
     }
   });
 }
@@ -75,19 +75,23 @@ value1: int / float
 operator: Takes "+", "-", "/", "*" which is handled by handleOperators()
 Cleaned return handled by cleanDisplay()
 
-*/
+*/ let result = 0;
   switch (operator) {
     case "+":
-      return cleanDisplay(+value1 + +value2);
+      result = +value1 + +value2;
+      return cleanDisplay(result.toString());
     case "-":
-      return cleanDisplay(+value1 - +value2);
+      result = +value1 - +value2;
+      return cleanDisplay(result.toString());
     case "/":
       if (value1 == 0 || value2 == 0) {
         return "Zero Error";
       }
-      return cleanDisplay(+value1 / +value2);
+      result = +value1 / +value2;
+      return cleanDisplay(result.toString());
     case "*":
-      return cleanDisplay(+value1 * +value2);
+      result = +value1 * +value2;
+      return cleanDisplay(result.toString());
   }
 }
 
@@ -97,8 +101,8 @@ Trim the numbers down if they are too bit for display
 displayValue: Int which is converted to string and returned to 9 digits
 */
 
-  if (displayValue.length > 8) {
-    return displayValue.substring(0, 8);
+  if (displayValue.length > 10) {
+    return `Number Too Long`;
   }
   return displayValue;
 }

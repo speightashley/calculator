@@ -15,6 +15,15 @@ let lastOp = "";
 let equalsPressed = false;
 
 result.innerText = displayValue;
+
+/* TODO:
+1. Handle Negative numbers
+2. Handle being able to have a zero before a 0. number
+3. Better handling of numbers too big
+4. Add Keyboard functionality
+
+*/
+
 /*
 
 Without pressing =

@@ -1,9 +1,12 @@
+//*******************DOM ELEMENTS *******************************************
+
 const result = document.getElementById("results");
 const digits = document.getElementsByClassName("digit");
 const operators = document.getElementsByClassName("op");
 const calfunc = document.getElementsByClassName("calfunction");
 const eq = document.getElementById("=");
 
+//*******************GLOBAL VARIABLES ****************************************
 let displayValue = 0;
 let value1 = 0;
 let value2 = 0;
@@ -12,8 +15,6 @@ let lastOp = "";
 let equalsPressed = false;
 
 result.innerText = displayValue;
-// TODO : Handle chaining of values
-
 /*
 
 Without pressing =
@@ -23,11 +24,10 @@ Without pressing =
 4. enter another number - store in display value
 4. push another operator - store display value in value2, reset display value to 0, calculate the result
     
-
-
 */
+// ***********************EVENT LISTENERS *********************************
 
-// Get digits
+// Digit button listeners
 for (const digit of digits) {
   digit.addEventListener("click", (e) => {
     if (displayValue == 0) {
@@ -40,7 +40,7 @@ for (const digit of digits) {
   });
 }
 
-// Function buttons
+// Calcutlator Function button listeners - Only AC works and acts as reset
 for (const fun of calfunc) {
   fun.addEventListener("click", (e) => {
     if (e.target.id == "clear") {
@@ -54,33 +54,61 @@ for (const fun of calfunc) {
   });
 }
 
-// operator actions
+// Operation button listeners
 for (const op of operators) {
   op.addEventListener("click", (e) => {
-    if (equalsPressed == false) {
-      if (value1 == 0) {
-        value1 = displayValue;
-        displayValue = e.target.id;
-        lastOp = displayValue;
-        result.innerText = displayValue;
-        displayValue = 0;
-      } else if (value1 != 0) {
-        value2 = displayValue;
-        displayValue = 0;
-        result.innerText = value2;
-        finalResult = getResult(value1, lastOp, value2);
-        lastOp = e.target.id;
-        displayValue = finalResult;
-        result.innerText = displayValue;
-        value2 = 0;
-        value1 = displayValue;
-        displayValue = 0;
-      }
-    }
+    handleOperators(e);
   });
 }
 
+// Equals button listener
 eq.addEventListener("click", (e) => {
+  handleEquals();
+});
+
+// *****************FUNCTIONS ****************************************
+
+function getResult(value1, operator, value2) {
+  /* Get results from values and an operation
+Returns a cleaned up answer to an equation
+value1: int / float
+operator: Takes "+", "-", "/", "*" which is handled by handleOperators()
+Cleaned return handled by cleanDisplay()
+
+*/
+  switch (operator) {
+    case "+":
+      return cleanDisplay(+value1 + +value2);
+    case "-":
+      return cleanDisplay(+value1 - +value2);
+    case "/":
+      if (value1 == 0 || value2 == 0) {
+        return "Zero Error";
+      }
+      return cleanDisplay(+value1 / +value2);
+    case "*":
+      return cleanDisplay(+value1 * +value2);
+  }
+}
+
+function cleanDisplay(displayValue) {
+  /* 
+Trim the numbers down if they are too bit for display
+displayValue: Int which is converted to string and returned to 9 digits
+*/
+
+  if (displayValue.length > 9) {
+    return displayValue.substring(0, 9);
+  }
+  return displayValue;
+}
+
+function handleEquals() {
+  /* 
+Handle operations when = is used to calculate it
+Doesn't use params because we are not handling the event here
+Sets global variables of value1, value2 and final result
+*/
   if (value2 == 0) {
     value2 = displayValue;
     displayValue = 0;
@@ -99,21 +127,28 @@ eq.addEventListener("click", (e) => {
     displayValue = 0;
     finalResult = 0;
   }
-});
+}
 
-// Get results when we have two numbers and an operation
-function getResult(value1, operator, value2) {
-  switch (operator) {
-    case "+":
-      return +value1 + +value2;
-    case "-":
-      return value1 - value2;
-    case "/":
-      if (value1 == 0 || value2 == 0) {
-        return "Zero Error";
-      }
-      return value1 / value2;
-    case "*":
-      return value1 * value2;
+function handleOperators(e) {
+  // Handle Event and Results when chained together
+  if (equalsPressed == false) {
+    if (value1 == 0) {
+      value1 = displayValue;
+      displayValue = e.target.id;
+      lastOp = displayValue;
+      result.innerText = displayValue;
+      displayValue = 0;
+    } else if (value1 != 0) {
+      value2 = displayValue;
+      displayValue = 0;
+      result.innerText = value2;
+      finalResult = getResult(value1, lastOp, value2);
+      lastOp = e.target.id;
+      displayValue = finalResult;
+      result.innerText = displayValue;
+      value2 = 0;
+      value1 = displayValue;
+      displayValue = 0;
+    }
   }
 }

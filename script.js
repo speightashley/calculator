@@ -102,6 +102,7 @@ displayValue: Int which is converted to string and returned to 9 digits
 */
 
   if (displayValue.length > 10) {
+    reset();
     return `Number Too Long`;
   }
   return displayValue;
@@ -113,7 +114,10 @@ Handle operations when = is used to calculate it
 Doesn't use params because we are not handling the event here
 Sets global variables of value1, value2 and final result
 */
-  if (value2 == 0) {
+  if (value1 == 0 && value2 == 0) {
+    reset();
+    result.innerText = 0;
+  } else if (value2 == 0) {
     value2 = displayValue;
     displayValue = 0;
     finalResult = getResult(value1, lastOp, value2);
@@ -155,4 +159,14 @@ function handleOperators(e) {
       displayValue = 0;
     }
   }
+}
+
+function reset() {
+  // Resets all numbers back to Zero
+  displayValue = 0;
+  value1 = 0;
+  value2 = 0;
+  finalResult = 0;
+  lastOp = "";
+  equalsPressed = false;
 }
